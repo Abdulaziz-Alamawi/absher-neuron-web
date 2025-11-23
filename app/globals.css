@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+@layer utilities {
+  .font-arabic {
+    font-family: var(--font-cairo), 'Cairo', 'Tajawal', system-ui, sans-serif;
+  }
+}
+
