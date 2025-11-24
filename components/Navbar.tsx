@@ -1,13 +1,26 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import { HiMenu, HiX } from 'react-icons/hi'
+import { isAuthenticated, logout } from '@/lib/auth'
 
 export default function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+  const [authenticated, setAuthenticated] = useState(false)
+
+  useEffect(() => {
+    setAuthenticated(isAuthenticated())
+  }, [pathname])
+
+  const handleLogout = () => {
+    logout()
+    setAuthenticated(false)
+    router.push('/')
+  }
 
   const navItems = [
     { href: '/', label: 'الرئيسية' },
@@ -45,16 +58,25 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href="/login"
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                isActive('/login')
-                  ? 'bg-primary text-white'
-                  : 'bg-primary text-white hover:bg-primary-dark'
-              }`}
-            >
-              تسجيل الدخول
-            </Link>
+            {authenticated ? (
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 rounded-lg text-sm font-medium bg-red-500 text-white hover:bg-red-600 transition-colors"
+              >
+                تسجيل الخروج
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isActive('/login')
+                    ? 'bg-primary text-white'
+                    : 'bg-primary text-white hover:bg-primary-dark'
+                }`}
+              >
+                تسجيل الدخول
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -85,17 +107,29 @@ export default function Navbar() {
                   {item.label}
                 </Link>
               ))}
-              <Link
-                href="/login"
-                onClick={() => setIsOpen(false)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium text-center ${
-                  isActive('/login')
-                    ? 'bg-primary text-white'
-                    : 'bg-primary text-white hover:bg-primary-dark'
-                }`}
-              >
-                تسجيل الدخول
-              </Link>
+              {authenticated ? (
+                <button
+                  onClick={() => {
+                    handleLogout()
+                    setIsOpen(false)
+                  }}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-center bg-red-500 text-white hover:bg-red-600 transition-colors"
+                >
+                  تسجيل الخروج
+                </button>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setIsOpen(false)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium text-center ${
+                    isActive('/login')
+                      ? 'bg-primary text-white'
+                      : 'bg-primary text-white hover:bg-primary-dark'
+                  }`}
+                >
+                  تسجيل الدخول
+                </Link>
+              )}
             </div>
           </div>
         )}

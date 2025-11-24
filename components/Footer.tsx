@@ -56,7 +56,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-2 space-x-reverse text-gray-400">
                 <HiMail className="text-primary" />
-                <span className="text-sm">info@absher-neuron.sa</span>
+                <span className="text-sm">hackathon@absher-neuron.sa</span>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse text-gray-400">
                 <HiPhone className="text-primary" />
@@ -68,7 +68,10 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
           <p>© 2025 Absher Neuron 2.0. جميع الحقوق محفوظة.</p>
-          <p className="mt-2">مشروع هاثون - نظام ذكاء اصطناعي للأمن الرقمي الوطني</p>
+          <p className="mt-2">
+            هذا المشروع نسخة أولية (MVP) ضمن هاكاثون أبشر – أكاديمية طويق
+          </p>
+          <p className="mt-1">نظام ذكاء اصطناعي للأمن الرقمي الوطني</p>
         </div>
       </div>
     </footer>

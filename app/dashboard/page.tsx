@@ -1,3 +1,6 @@
+'use client'
+
+import ProtectedRoute from '@/components/ProtectedRoute'
 import RiskBadge from '@/components/RiskBadge'
 import StatsCard from '@/components/StatsCard'
 import AlertsTable from '@/components/AlertsTable'
@@ -10,7 +13,7 @@ import {
   HiTrendingUp,
 } from 'react-icons/hi'
 
-export default function Dashboard() {
+function DashboardContent() {
   const userAlerts = mockAlerts.filter((alert) => alert.riskLevel !== 'Low').slice(0, 5)
 
   return (
@@ -115,6 +118,14 @@ export default function Dashboard() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function Dashboard() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   )
 }
 

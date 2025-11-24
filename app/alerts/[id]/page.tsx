@@ -1,3 +1,5 @@
+'use client'
+
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import RiskBadge from '@/components/RiskBadge'
@@ -10,15 +12,17 @@ import {
   HiChip,
   HiShieldCheck,
 } from 'react-icons/hi'
+import { use } from 'react'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 export default function AlertDetailsPage({ params }: PageProps) {
-  const alert = mockAlerts.find((a) => a.id === params.id)
+  const { id } = use(params)
+  const alert = mockAlerts.find((a) => a.id === id)
 
   if (!alert) {
     notFound()

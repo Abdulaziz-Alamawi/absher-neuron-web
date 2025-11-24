@@ -6,6 +6,22 @@
   body {
     @apply bg-gray-50 text-gray-900;
   }
+  
+  /* RTL Support */
+  * {
+    direction: rtl;
+  }
+  
+  /* Better spacing for mobile */
+  @media (max-width: 640px) {
+    section {
+      @apply py-12;
+    }
+    
+    h1, h2, h3 {
+      @apply leading-tight;
+    }
+  }
 }
 
 @layer utilities {

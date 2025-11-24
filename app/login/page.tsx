@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { HiShieldCheck, HiEye, HiEyeOff, HiLockClosed, HiUser } from 'react-icons/hi'
+import { isAuthenticated } from '@/lib/auth'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -15,6 +16,13 @@ export default function LoginPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
 
+  // إذا كان المستخدم مسجل دخول بالفعل، توجهه للوحة التحكم
+  useEffect(() => {
+    if (isAuthenticated()) {
+      router.push('/dashboard')
+    }
+  }, [router])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -22,6 +30,10 @@ export default function LoginPage() {
     // محاكاة تسجيل الدخول (في الإنتاج سيتم الاتصال بالـ API)
     setTimeout(() => {
       setIsLoading(false)
+      // حفظ حالة تسجيل الدخول
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('absher-neuron-auth', 'true')
+      }
       // بعد تسجيل الدخول الناجح، إعادة التوجيه إلى لوحة التحكم
       router.push('/dashboard')
     }, 1000)

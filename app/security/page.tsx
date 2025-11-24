@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import ProtectedRoute from '@/components/ProtectedRoute'
 import StatsCard from '@/components/StatsCard'
 import AlertsTable from '@/components/AlertsTable'
 import { mockAlerts, mockSecurityStats } from '@/lib/mockData'
@@ -13,7 +14,7 @@ import {
 
 type RiskFilter = 'All' | 'High' | 'Medium' | 'Low'
 
-export default function SecurityDashboard() {
+function SecurityDashboardContent() {
   const [riskFilter, setRiskFilter] = useState<RiskFilter>('All')
 
   const filteredAlerts =
@@ -143,6 +144,14 @@ export default function SecurityDashboard() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SecurityDashboard() {
+  return (
+    <ProtectedRoute>
+      <SecurityDashboardContent />
+    </ProtectedRoute>
   )
 }
 
