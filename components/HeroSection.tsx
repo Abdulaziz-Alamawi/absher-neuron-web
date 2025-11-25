@@ -2,14 +2,28 @@
 
 import Link from 'next/link'
 
+interface HeroCTA {
+  label: string
+  href?: string
+  variant?: 'primary' | 'outline'
+  onClick?: () => void
+}
+
 interface HeroSectionProps {
   title: string
   subtitle: string
   description?: string
   showCTA?: boolean
+  ctas?: HeroCTA[]
 }
 
-export default function HeroSection({ title, subtitle, description, showCTA = false }: HeroSectionProps) {
+export default function HeroSection({
+  title,
+  subtitle,
+  description,
+  showCTA = false,
+  ctas,
+}: HeroSectionProps) {
   const scrollToSection = (sectionId: string) => {
     if (typeof window !== 'undefined') {
       const element = document.getElementById(sectionId)
@@ -35,19 +49,44 @@ export default function HeroSection({ title, subtitle, description, showCTA = fa
             </p>
           )}
           {showCTA && (
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-              <Link
-                href="/dashboard"
-                className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors text-center shadow-lg"
-              >
-                ابدأ الآن
-              </Link>
-              <button
-                onClick={() => scrollToSection('how-it-works')}
-                className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-              >
-                اعرف المزيد
-              </button>
+            <div className="flex flex-col md:flex-row justify-center gap-4 mt-8">
+              {(ctas && ctas.length > 0
+                ? ctas
+                : [
+                    { label: 'شاهد لوحة التحكم', href: '/dashboard', variant: 'primary' as const },
+                    {
+                      label: 'كيف يعمل؟',
+                      variant: 'outline' as const,
+                      onClick: () => scrollToSection('how-it-works'),
+                    },
+                  ]
+              ).map((cta, index) =>
+                cta.href ? (
+                  <Link
+                    key={`${cta.label}-${index}`}
+                    href={cta.href}
+                    className={`px-8 py-3 rounded-lg font-semibold text-center shadow-lg transition-colors ${
+                      cta.variant === 'outline'
+                        ? 'bg-transparent border-2 border-white text-white hover:bg-white/10'
+                        : 'bg-white text-primary hover:bg-gray-100'
+                    }`}
+                  >
+                    {cta.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={`${cta.label}-${index}`}
+                    onClick={cta.onClick}
+                    className={`px-8 py-3 rounded-lg font-semibold shadow-lg transition-colors ${
+                      cta.variant === 'outline'
+                        ? 'bg-transparent border-2 border-white text-white hover:bg-white/10'
+                        : 'bg-white text-primary hover:bg-gray-100'
+                    }`}
+                  >
+                    {cta.label}
+                  </button>
+                ),
+              )}
             </div>
           )}
         </div>

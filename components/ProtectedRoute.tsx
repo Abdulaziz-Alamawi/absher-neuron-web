@@ -2,20 +2,31 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { isAuthenticated } from '@/lib/auth'
+import { getUserRole, isAuthenticated, UserRole } from '@/lib/auth'
 
 interface ProtectedRouteProps {
   children: React.ReactNode
+  requiredRole?: UserRole
+  redirectTo?: string
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({
+  children,
+  requiredRole,
+  redirectTo = requiredRole === 'analyst' ? '/analyst-login' : '/login',
+}: ProtectedRouteProps) {
   const router = useRouter()
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      router.push('/login')
+      router.push(redirectTo)
+      return
     }
-  }, [router])
+
+    if (requiredRole && getUserRole() !== requiredRole) {
+      router.push(redirectTo)
+    }
+  }, [redirectTo, requiredRole, router])
 
   if (!isAuthenticated()) {
     return (
@@ -28,6 +39,25 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     )
   }
 
+  if (requiredRole && getUserRole() !== requiredRole) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">جارٍ التحقق من الصلاحيات...</p>
+        </div>
+      </div>
+    )
+  }
+
   return <>{children}</>
 }
+
+
+
+
+
+
+
+
 

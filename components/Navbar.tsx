@@ -24,6 +24,7 @@ export default function Navbar() {
 
   const navItems = [
     { href: '/', label: 'الرئيسية' },
+    { href: '/use-cases', label: 'حالات الاستخدام' },
     { href: '/dashboard', label: 'لوحة التحكم' },
     { href: '/security', label: 'لوحة الأمن' },
     { href: '/about', label: 'حول النظام' },
@@ -40,7 +41,10 @@ export default function Navbar() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">N</span>
             </div>
-            <span className="text-xl font-bold text-primary">Absher Neuron</span>
+            <div className="flex flex-col items-start">
+              <span className="text-xl font-bold text-primary leading-none">Absher Neuron 2.0</span>
+              <span className="text-xs text-gray-500">نحمي قبل أن يحدث</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

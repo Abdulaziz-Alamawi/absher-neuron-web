@@ -14,8 +14,11 @@ export default function Footer() {
               </div>
               <span className="text-xl font-bold">Absher Neuron 2.0</span>
             </div>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-400 text-sm mb-4">
               المنظومة العصبية الوطنية للتنبؤ الأمني والهوية السلوكية
+            </p>
+            <p className="text-xs text-gray-500">
+              نسخة تجريبية للعرض في الهاكاثون – البيانات المعروضة وهمية لأغراض المحاكاة فقط.
             </p>
           </div>
 
@@ -56,11 +59,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-2 space-x-reverse text-gray-400">
                 <HiMail className="text-primary" />
-                <span className="text-sm">hackathon@absher-neuron.sa</span>
+                <span className="text-sm">demo@absher-neuron.sa (بريد تجريبي)</span>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse text-gray-400">
                 <HiPhone className="text-primary" />
-                <span className="text-sm">920000000</span>
+                <span className="text-sm">+966-9200-NEURON</span>
               </div>
             </div>
           </div>

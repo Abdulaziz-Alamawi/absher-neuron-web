@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { HiShieldCheck, HiEye, HiEyeOff, HiLockClosed, HiUser } from 'react-icons/hi'
-import { isAuthenticated } from '@/lib/auth'
+import { isAuthenticated, setAuthenticated, setUserRole, setThreatLevel, setCitizenMonitorFlag } from '@/lib/auth'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -27,15 +27,13 @@ export default function LoginPage() {
     e.preventDefault()
     setIsLoading(true)
     
-    // محاكاة تسجيل الدخول (في الإنتاج سيتم الاتصال بالـ API)
     setTimeout(() => {
       setIsLoading(false)
-      // حفظ حالة تسجيل الدخول
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('absher-neuron-auth', 'true')
-      }
-      // بعد تسجيل الدخول الناجح، إعادة التوجيه إلى لوحة التحكم
-      router.push('/dashboard')
+      setAuthenticated(true)
+      setUserRole('citizen')
+      setThreatLevel('HIGH')
+      setCitizenMonitorFlag(true)
+      router.push('/security-check')
     }, 1000)
   }
 
@@ -50,7 +48,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 via-white to-primary/5 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {/* Logo and Header */}
         <div className="text-center">
           <Link href="/" className="flex justify-center items-center gap-3 mb-6">
             <div className="w-16 h-16 bg-primary rounded-xl flex items-center justify-center shadow-lg">
@@ -61,8 +58,21 @@ export default function LoginPage() {
               <p className="text-sm text-gray-600">المنظومة العصبية الوطنية</p>
             </div>
           </Link>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">تسجيل الدخول</h2>
-          <p className="text-gray-600">سجل دخولك للوصول إلى لوحة التحكم</p>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-2xl font-bold text-gray-900">تسجيل الدخول</h2>
+              <div className="flex items-center justify-center gap-3 text-sm">
+                <span className="text-gray-600">
+                  دخول المواطن
+                </span>
+                <Link
+                  href="/analyst-login"
+                  className="px-3 py-1 rounded-full border border-primary text-primary font-semibold text-xs"
+                >
+                  تسجيل كمحلل أمني
+                </Link>
+              </div>
+              <p className="text-gray-500 text-sm">بعد الدخول سيتم تنفيذ التحقق الأمني الذكي.</p>
+            </div>
         </div>
 
         {/* Login Form */}
@@ -188,16 +198,23 @@ export default function LoginPage() {
           </form>
 
           {/* Security Notice */}
-          <div className="mt-6 pt-6 border-t border-gray-200">
+          <div className="mt-6 pt-6 border-t border-gray-200 space-y-2 text-xs text-gray-500">
             <div className="flex items-start gap-3">
               <HiShieldCheck className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-gray-600">
-                <p className="font-medium mb-1">نظام آمن ومحمي</p>
-                <p className="text-xs">
-                  يتم تشفير جميع البيانات والاتصالات لحماية معلوماتك الشخصية
+              <div>
+                <p className="font-medium text-gray-600">تنبيه مهم</p>
+                <p>
+                  هذه صفحة تسجيل دخول تجريبية للمواطنين. بعد تسجيل الدخول سيتم تنفيذ خطوات
+                  التحقق الذكي قبل السماح بالوصول إلى الخدمات.
                 </p>
               </div>
             </div>
+            <p>
+              إذا كنت محلل أمني{' '}
+              <Link href="/analyst-login" className="text-primary font-semibold">
+                انتقل إلى تسجيل دخول المحللين
+              </Link>
+            </p>
           </div>
         </div>
 
